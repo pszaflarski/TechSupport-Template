@@ -48,14 +48,14 @@ Interactive `sudo` is blocked by a safety hook, and you cannot click Windows UAC
      ```
 
 2. **Create Desktop Shortcut (`Fix Issue`):**
-   - **Ubuntu:** Write `$HOME/Desktop/FixIssue.desktop` using **expanded concrete absolute paths** (NEVER literal `$USER`, `\$USER`, or `~`, because `.desktop` `Exec=` and `Icon=` keys do not expand shell variables):
+   - **Ubuntu / Linux:** Write `$HOME/Desktop/FixIssue.desktop` using **expanded concrete absolute paths** (NEVER literal `$USER`, `\$USER`, or `~`, because `.desktop` `Exec=` and `Icon=` keys do not expand shell variables). Point `Exec=` at `<PROJECT_DIR>/.agents/scripts/run_fix.sh` (which runs `pkexec` and shows `"Working!"` and `"Done!"` popups):
      ```ini
      [Desktop Entry]
      Version=1.0
      Type=Application
      Name=Fix Issue
      Comment=Run approved Tech Support fix
-     Exec=pkexec /bin/bash <PROJECT_DIR>/temp_fix.sh
+     Exec=<PROJECT_DIR>/.agents/scripts/run_fix.sh <PROJECT_DIR>/temp_fix.sh
      Icon=<PROJECT_DIR>/assets/banana.png
      Terminal=false
      StartupNotify=true
@@ -66,20 +66,20 @@ Interactive `sudo` is blocked by a safety hook, and you cannot click Windows UAC
      gio set "$HOME/Desktop/FixIssue.desktop" metadata::trusted true 2>/dev/null || true
      gio set "$HOME/Desktop/FixIssue.desktop" metadata::caja-trusted-launcher true 2>/dev/null || true
      ```
-   - **Windows:** Create `Fix Issue.lnk` on the user's real Desktop (`[Environment]::GetFolderPath('Desktop')`, which handles OneDrive Desktop redirection) via PowerShell `WScript.Shell` with **separate** `TargetPath` and `Arguments` (putting arguments inside `TargetPath` throws a COM error):
+   - **Windows:** Create `Fix Issue.lnk` on the user's real Desktop (`[Environment]::GetFolderPath('Desktop')`, which handles OneDrive Desktop redirection) via PowerShell `WScript.Shell` with **separate** `TargetPath` and `Arguments` (putting arguments inside `TargetPath` throws a COM error), pointing to `<PROJECT_DIR>\.agents\scripts\run_fix.ps1` (which elevates via UAC and shows `"Working!"` and `"Done!"` popups):
      ```powershell
      $ws = New-Object -ComObject WScript.Shell
      $desktop = [Environment]::GetFolderPath('Desktop')
      $s = $ws.CreateShortcut("$desktop\Fix Issue.lnk")
      $s.TargetPath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-     $s.Arguments = "-NoProfile -WindowStyle Hidden -Command `"Start-Process cmd.exe -ArgumentList '/c <PROJECT_DIR>\temp_fix.bat' -Verb RunAs`""
+     $s.Arguments = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"<PROJECT_DIR>\.agents\scripts\run_fix.ps1`" `"<PROJECT_DIR>\temp_fix.bat`""
      $s.WorkingDirectory = "<PROJECT_DIR>"
      $s.IconLocation = "<PROJECT_DIR>\assets\banana.ico"
      $s.Save()
      ```
 
 3. **Instruct User:**
-   Tell the user: *"Please double-click the yellow banana icon called 'Fix Issue' on your desktop, type your computer password (or click Yes) when asked, and tell me 'done' once it finishes."*
+   Tell the user: *"Please double-click the yellow banana icon called 'Fix Issue' on your desktop, type your computer password (or click Yes) when asked, and tell me 'done' once the 'Done!' message pops up."*
 
 4. **Verify & Clean Up:**
    Once the user confirms, read `logs/last_fix.log`, run a read-only verification command to confirm the fix worked, and **always delete both `temp_fix.*` and the Desktop shortcut** (`~/Desktop/FixIssue.desktop` or `$([Environment]::GetFolderPath('Desktop'))\Fix Issue.lnk`).

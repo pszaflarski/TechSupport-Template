@@ -20,7 +20,8 @@ TechSupport/
 │   ├── hooks.json                   # PreToolUse safety gate + Stop session log exporter
 │   ├── scripts/
 │   │   ├── safety_gate.py / .ps1    # Blocks interactive sudo, disk/boot damage, disabling firewall/Tailscale
-│   │   └── export_session_log.py / .ps1 # Exports readable logs to logs/session_YYYY-MM-DD_<id>.log
+│   │   ├── export_session_log.py / .ps1 # Exports readable logs to logs/session_YYYY-MM-DD_<id>.log
+│   │   └── run_fix.sh / .ps1        # Elevates temp_fix.* with "Working!" progress and "Done!" popups
 │   └── skills/
 │       ├── moonlight-sunshine/SKILL.md  # Moonlight / Sunshine / MultiSeat streaming recovery
 │       ├── audio-output/SKILL.md        # PipeWire / WirePlumber / Bluetooth / Windows Audio recovery
@@ -111,7 +112,7 @@ You can also pass arguments directly: `./pair-ssh.sh <remote_user> <tailscale_ho
 ## Safety Hooks & Privilege Escalation
 
 - **Safety Gate (`PreToolUse`):** [.agents/hooks.json](.agents/hooks.json) enforces deterministic blocking of bare interactive `sudo`, disk formatting/partitioning, bootloader edits, system directory wipes, and disabling SSH/Tailscale/firewalls/Defender—both in `run_command` and inside generated `temp_fix.*` scripts.
-- **Banana Escalation ("Fix Issue"):** When root or Administrator rights are genuinely needed, the assistant writes `temp_fix.sh` / `temp_fix.bat`, puts a trusted **Fix Issue** banana shortcut on the Desktop (`pkexec` on Linux, `Start-Process -Verb RunAs` on Windows), asks the user to double-click it, checks `logs/last_fix.log`, and deletes both the temporary script and shortcut afterward.
+- **Banana Escalation ("Fix Issue"):** When root or Administrator rights are genuinely needed, the assistant writes `temp_fix.sh` / `temp_fix.bat`, puts a trusted **Fix Issue** banana shortcut on the Desktop (`run_fix.sh` with `pkexec` on Linux, `run_fix.ps1` with `Start-Process -Verb RunAs` on Windows—showing a `"Working!"` progress dialog and `"Done!"` popup), asks the user to double-click it, checks `logs/last_fix.log`, and deletes both the temporary script and shortcut afterward.
 - **Session Logs (`Stop`):** Each conversation exports a clean transcript to `logs/session_YYYY-MM-DD_<id>.log` (git-ignored).
 
 ---

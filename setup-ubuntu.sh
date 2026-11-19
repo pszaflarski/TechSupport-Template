@@ -7,7 +7,7 @@ DESKTOP_FILE="$DESKTOP_DIR/TechSupport.desktop"
 SETTINGS_FILE="$HOME/.gemini/antigravity-cli/settings.json"
 
 chmod +x "$SCRIPT_DIR/launch.sh" "$SCRIPT_DIR/setup-ubuntu.sh" "$SCRIPT_DIR/pair-ssh.sh"
-chmod +x "$SCRIPT_DIR/.agents/scripts/safety_gate.py" "$SCRIPT_DIR/.agents/scripts/export_session_log.py"
+chmod +x "$SCRIPT_DIR/.agents/scripts/safety_gate.py" "$SCRIPT_DIR/.agents/scripts/export_session_log.py" "$SCRIPT_DIR/.agents/scripts/run_fix.sh"
 
 mkdir -p "$SCRIPT_DIR/logs" "$DESKTOP_DIR"
 
