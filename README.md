@@ -35,8 +35,7 @@ TechSupport/
 
 ## Prerequisites
 
-1. **Antigravity CLI (`agy`)** installed and authenticated (`agy` available on `PATH` or `~/.local/bin` / `/usr/local/bin`).
-2. **Optional — Tailscale** installed and logged in on both the client and remote gaming host if troubleshooting Moonlight/Sunshine remotely.
+- **Antigravity CLI (`agy`)** installed and authenticated (`agy` available on `PATH` or `~/.local/bin` / `/usr/local/bin`).
 
 ---
 
@@ -78,7 +77,7 @@ What `setup-windows.ps1` does:
 
 Edit the untracked `LOCAL_ENV.md` on each machine with its real:
 - Machine hostname, user, OS/desktop, and `<PROJECT_DIR>`
-- Tailscale IP/hostname, SSH alias, streaming service/logs/ports, and LAN IP/MAC (for same-LAN Wake-on-LAN)
+- Optional (for Moonlight/Sunshine): Tailscale IP/hostname, SSH alias, streaming service/logs/ports, and LAN IP/MAC (for same-LAN Wake-on-LAN)
 - Default printer name (if any)
 
 ---
