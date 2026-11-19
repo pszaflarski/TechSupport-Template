@@ -1,0 +1,36 @@
+# Machine-specific environment & logs
+LOCAL_ENV.md
+logs/*
+!logs/.gitkeep
+*.log
+
+# Temporary Fix Issue scripts and Desktop shortcuts
+temp_fix.*
+*.desktop
+*.lnk
+
+# Python bytecode from hook scripts
+__pycache__/
+*.py[cod]
+*.pyo
+
+# OS, Explorer, and editor metadata
+Thumbs.db
+desktop.ini
+.DS_Store
+._*
+.directory
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local env, CLI state, and accidental SSH keys/secrets
+.env
+.env.*
+.gemini/
+*.pem
+*.key
+id_ed25519*
+id_rsa*

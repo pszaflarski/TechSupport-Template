@@ -1,0 +1,25 @@
+{
+  "tech-support-safety-gate": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|write_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -e /bin/sh && python3 scripts/safety_gate.py || powershell -NoProfile -ExecutionPolicy Bypass -File scripts/safety_gate.ps1",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "session-transcript-logger": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "test -e /bin/sh && python3 scripts/export_session_log.py || powershell -NoProfile -ExecutionPolicy Bypass -File scripts/export_session_log.ps1",
+        "timeout": 10
+      }
+    ]
+  }
+}
