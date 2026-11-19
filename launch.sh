@@ -11,6 +11,10 @@ if [ ! -t 0 ] && [ "${1:-}" != "--in-terminal" ]; then
         exec mate-terminal --disable-factory -t "Tech Support" -e "'$SCRIPT_PATH' --in-terminal"
     elif command -v gnome-terminal >/dev/null 2>&1; then
         exec gnome-terminal --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
+    elif command -v ptyxis >/dev/null 2>&1; then
+        exec ptyxis --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
+    elif command -v kgx >/dev/null 2>&1; then
+        exec kgx --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
     elif command -v xfce4-terminal >/dev/null 2>&1; then
         exec xfce4-terminal --title="Tech Support" -e "'$SCRIPT_PATH' --in-terminal"
     elif command -v konsole >/dev/null 2>&1; then
