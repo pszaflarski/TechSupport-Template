@@ -68,8 +68,31 @@ if ! check_online; then
     fi
 fi
 
-# 2. Launch agy attached directly to the TTY for clean interactive rendering
-agy --mode auto --dangerously-skip-permissions -i "hi"
+# 2. Resolve model (defaults to free-tier Flash; override in git-ignored .env)
+TECHSUPPORT_MODEL="${TECHSUPPORT_MODEL:-gemini-3.8-flash-high}"
+if [ -f "$SCRIPT_DIR/.env" ]; then
+    while IFS= read -r line || [ -n "$line" ]; do
+        line="${line%$'\r'}"
+        case "$line" in
+            ""|\#*) continue ;;
+            TECHSUPPORT_MODEL=*)
+                val="${line#TECHSUPPORT_MODEL=}"
+                val="${val#"${val%%[![:space:]]*}"}"
+                val="${val%"${val##*[![:space:]]}"}"
+                val="${val#\"}" ; val="${val%\"}"
+                val="${val#\'}" ; val="${val%\'}"
+                TECHSUPPORT_MODEL="$val"
+                ;;
+        esac
+    done < "$SCRIPT_DIR/.env"
+fi
+
+# 3. Launch agy attached directly to the TTY for clean interactive rendering
+AGY_ARGS=(--mode auto --dangerously-skip-permissions)
+if [ -n "$TECHSUPPORT_MODEL" ] && [ "$TECHSUPPORT_MODEL" != "default" ]; then
+    AGY_ARGS=(--model "$TECHSUPPORT_MODEL" "${AGY_ARGS[@]}")
+fi
+agy "${AGY_ARGS[@]}" -i "hi"
 
 echo ""
 read -rp "Session ended. Press Enter to close..."

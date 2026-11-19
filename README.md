@@ -82,6 +82,17 @@ Edit the untracked `LOCAL_ENV.md` on each machine with its real:
 
 ---
 
+## Model Selection (Free vs. Paid Tier)
+
+- **Default (`gemini-3.8-flash-high`):** `launch.sh` and `launch.bat` pass `--model gemini-3.8-flash-high` by default so users on the $0 free tier work out of the box without altering global `agy` settings for your other CLI sessions.
+- **Paid-tier upgrade (`gemini-4-hydrogen-high`):** If you have a paid tier, upgrading to **Gemini 4 Hydrogen (High)** is recommended. Create a git-ignored `.env` file in the TechSupport folder with:
+  ```dotenv
+  TECHSUPPORT_MODEL=gemini-4-hydrogen-high
+  ```
+- **Use `agy`'s own default:** Set `TECHSUPPORT_MODEL=default` (or leave it blank) in `.env` to omit `--model`. Run `agy models` anytime to check current model IDs.
+
+---
+
 ## Optional: Pair Passwordless SSH for Moonlight/Sunshine
 
 If you use `.agents/skills/moonlight-sunshine` to inspect or restart Sunshine/Apollo remotely over Tailscale:

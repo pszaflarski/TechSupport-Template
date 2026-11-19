@@ -17,7 +17,15 @@ if errorlevel 1 (
     )
 )
 
-:: 2. Launch agy cleanly in interactive auto mode
+:: 2. Resolve model (defaults to free-tier Flash; override in git-ignored .env)
+if not defined TECHSUPPORT_MODEL set "TECHSUPPORT_MODEL=gemini-3.8-flash-high"
+if exist ".env" (
+    for /f "usebackq eol=# tokens=1,* delims==" %%A in (".env") do (
+        if /i "%%~A"=="TECHSUPPORT_MODEL" set "TECHSUPPORT_MODEL=%%~B"
+    )
+)
+
+:: 3. Launch agy cleanly in interactive auto mode
 if exist "%LOCALAPPDATA%\agy\bin" set "PATH=%LOCALAPPDATA%\agy\bin;%PATH%"
 where agy >nul 2>&1
 if errorlevel 1 (
@@ -27,7 +35,13 @@ if errorlevel 1 (
     exit /b 1
 )
 
-call agy --mode auto --dangerously-skip-permissions -i "hi"
+if "%TECHSUPPORT_MODEL%"=="" (
+    call agy --mode auto --dangerously-skip-permissions -i "hi"
+) else if /i "%TECHSUPPORT_MODEL%"=="default" (
+    call agy --mode auto --dangerously-skip-permissions -i "hi"
+) else (
+    call agy --model "%TECHSUPPORT_MODEL%" --mode auto --dangerously-skip-permissions -i "hi"
+)
 
 echo.
 pause
