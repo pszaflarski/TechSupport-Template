@@ -28,12 +28,21 @@ Exec=$SCRIPT_DIR/launch.sh
 Icon=$SCRIPT_DIR/assets/support.png
 Terminal=false
 StartupNotify=true
+StartupWMClass=com.canonical.Terminal.TechSupport
 Categories=Utility;
 EOF
 
 chmod +x "$DESKTOP_FILE"
 gio set "$DESKTOP_FILE" metadata::trusted true 2>/dev/null || true
 gio set "$DESKTOP_FILE" metadata::caja-trusted-launcher true 2>/dev/null || true
+
+# Also install under ~/.local/share/applications matching GNOME Terminal's --app-id
+# so Wayland/X11 docks match the window to the Tech Support icon instead of a generic icon.
+APP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+mkdir -p "$APP_DIR"
+cp "$DESKTOP_FILE" "$APP_DIR/com.canonical.Terminal.TechSupport.desktop"
+chmod +x "$APP_DIR/com.canonical.Terminal.TechSupport.desktop"
+update-desktop-database "$APP_DIR" 2>/dev/null || true
 
 # Add TechSupport directory to trustedWorkspaces in agy settings.json
 python3 - "$SETTINGS_FILE" "$SCRIPT_DIR" <<'PYEOF'

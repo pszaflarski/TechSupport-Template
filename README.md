@@ -55,6 +55,7 @@ What `setup-ubuntu.sh` does:
 - Copies `LOCAL_ENV.example.md` to `LOCAL_ENV.md` if missing.
 - Creates `~/Desktop/TechSupport.desktop` (`Terminal=false`; `launch.sh` opens `mate-terminal` / `gnome-terminal` / `ptyxis` / `kgx` / `xfce4-terminal` / `konsole` directly to avoid `uxterm -x` issues).
 - Marks the desktop launcher trusted for both GNOME (`metadata::trusted`) and MATE Caja (`metadata::caja-trusted-launcher`).
+- Also installs `~/.local/share/applications/com.canonical.Terminal.TechSupport.desktop` with `StartupWMClass` so Wayland/X11 docks display the Tech Support icon instead of a generic gear/terminal icon.
 - Adds this folder to `trustedWorkspaces` in `~/.gemini/antigravity-cli/settings.json`.
 
 ### Windows (Windows 10 / 11, tested on Windows 11)

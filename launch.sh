@@ -7,16 +7,21 @@ SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
 # Launch inside an explicit GUI terminal if double-clicked from Desktop/Caja.
 # This avoids desktop defaults like uxterm -x failing before launch.sh runs.
 if [ ! -t 0 ] && [ "${1:-}" != "--in-terminal" ]; then
+    APP_WM_CLASS="com.canonical.Terminal.TechSupport"
     if command -v mate-terminal >/dev/null 2>&1; then
-        exec mate-terminal --disable-factory -t "Tech Support" -e "'$SCRIPT_PATH' --in-terminal"
+        exec mate-terminal --disable-factory --class="$APP_WM_CLASS" -t "Tech Support" -e "'$SCRIPT_PATH' --in-terminal"
     elif command -v gnome-terminal >/dev/null 2>&1; then
-        exec gnome-terminal --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
+        if grep -Iq -- '--app-id' "$(command -v gnome-terminal)" 2>/dev/null; then
+            exec gnome-terminal --app-id="$APP_WM_CLASS" --class="$APP_WM_CLASS" --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
+        else
+            exec gnome-terminal --class="$APP_WM_CLASS" --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
+        fi
     elif command -v ptyxis >/dev/null 2>&1; then
         exec ptyxis --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
     elif command -v kgx >/dev/null 2>&1; then
         exec kgx --title="Tech Support" -- "$SCRIPT_PATH" --in-terminal
     elif command -v xfce4-terminal >/dev/null 2>&1; then
-        exec xfce4-terminal --title="Tech Support" -e "'$SCRIPT_PATH' --in-terminal"
+        exec xfce4-terminal --disable-server --class="$APP_WM_CLASS" --title="Tech Support" -e "'$SCRIPT_PATH' --in-terminal"
     elif command -v konsole >/dev/null 2>&1; then
         exec konsole -p tabtitle="Tech Support" -e "$SCRIPT_PATH" --in-terminal
     elif command -v x-terminal-emulator >/dev/null 2>&1; then
