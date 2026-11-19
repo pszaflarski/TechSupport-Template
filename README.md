@@ -1,6 +1,6 @@
 # TechSupport Bot (`agy`) Template
 
-A portable, family-friendly IT support assistant powered by the Antigravity CLI (`agy`) for **Ubuntu** and **Windows 11**. Each launch opens a fresh support conversation with plain-English guidance, targeted diagnostic skills, a deterministic safety hook, and a one-click privilege-escalation workflow (**Fix Issue** banana icon) so non-technical users never touch a terminal.
+A portable, family-friendly IT support assistant powered by the Antigravity CLI (`agy`) for **Ubuntu** and **Windows 11**. This pattern can be used with other coding CLIs such as Claude but agy still offers a generous free tier that allows it to help with a variety of issues to anyone with a Google account at $0. Each launch opens a fresh support conversation with plain-English guidance, targeted diagnostic skills, a deterministic safety hook, and a one-click privilege-escalation workflow (**Fix Issue** banana icon) so non-technical users never touch a terminal.
 
 ---
 
